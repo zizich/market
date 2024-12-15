@@ -10,7 +10,7 @@ def index(request):
         'dict': {'first': 1},
         'bool': True,
     }
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/index.html')
 
 
 def about(request):
