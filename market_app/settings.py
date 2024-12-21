@@ -127,6 +127,8 @@ STATICFILES_DIRS = [
         BASE_DIR / "static",  # Путь к вашей директории со статическими файлами.
     ]
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 INTERNAL_IPS = [
     # ...
