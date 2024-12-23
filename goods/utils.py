@@ -1,4 +1,4 @@
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
 from django.db.models import Q
 from goods.models import Products
 
@@ -11,7 +11,31 @@ def q_search(query):
 
     vector = SearchVector("name", 'description')  # выбираем колонны в БД для поиска
     query = SearchQuery(query)  # передаем query (строку, вводимую для поиска)
-    return Products.objects.annotate(rank=SearchRank(vector, query)).order_by("-rank")
+
+    # тут как раз таки полученные vector и query передаем в SearchRank чтобы нашел нам наиболее подходящий ответ
+    # и через фильтр с параметром rank__gt=0 указываем что результат выдаем где ранк больше 0 и сортируем в order_by
+    # обратном порядке по результатам -rank
+    result = (Products.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gt=0).order_by("-rank"))
+
+    # тут же полученные результаты окрашиваем в желтый цвет
+    result = result.annotate(
+        headline=SearchHeadline(
+            "name",
+            query,
+            start_sel="<span style='background-color: yellow;'>",
+            stop_sel="</span>",
+        )
+    )
+
+    result = result.annotate(bodyline=SearchHeadline(
+        "description",
+        query,
+        start_sel="<span style='background-color: yellow;'>",
+        stop_sel="</span>",
+        )
+    )
+
+    return result
 
     # Searching against a single field is great but rather limiting. The Entry instances we’re searching belong
     # to a Blog, which has a tagline field. To query against both fields, use a SearchVector:
