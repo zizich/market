@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load goods_tags %}
 
@@ -16,10 +16,15 @@
         <!--
         action = будет указан URL маршрут на которой эта форма будет отправлять GET запрос
         -->
-        <form action="{% if request.GET.q %}{% url 'catalog:search'%}{% else %}{% url 'catalog:index' slug_url %}{% endif %}" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
+        <form action="{% if request.GET.q %}
+                        {% url 'catalog:search'%}
+                      {% else %}
+                        {% url 'catalog:index' slug_url %}
+                       {% endif %}"
+              method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
             <div class="form-check text-white mx-3">
                 <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on"
-                       {% if request.GET.on_sale == 'on' %} checked {% endif %}>
+                       {% if request.GET.on_sale == "on" %} checked {% endif %}>
                 {% if request.GET.q %}
                     <input type="hidden" name="q" value="{{ request.GET.q }}">
                 {% endif %}
