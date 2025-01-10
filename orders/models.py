@@ -37,7 +37,7 @@ class Order(models.Model):
         return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
 
 
-# БД для формирования заказа по продуктам
+# БД для формирования заказа по продуктам .!..
 class OrderItem(models.Model):
     order = models.ForeignKey(to=Order, on_delete=models.CASCADE, verbose_name="Заказ")
     product = models.ForeignKey(to=Products, on_delete=models.SET_DEFAULT, null=True, verbose_name="Продукт",
@@ -56,7 +56,7 @@ class OrderItem(models.Model):
     objects = OrderitemQueryset.as_manager()
 
     def products_price(self):
-        return round(self.product.sell_price() * self.quantity, 2)
+        return round(self.product.sale_price() * self.quantity, 2)
 
     def __str__(self):
         return f"Товар {self.name} | Заказ № {self.order.pk}"
