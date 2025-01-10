@@ -32,7 +32,7 @@ def create_order(request):
                         for cart_item in cart_items:
                             product = cart_item.product
                             name = cart_item.product.name
-                            price = cart_item.product.sell_price()
+                            price = cart_item.product.sale_price()
                             quantity = cart_item.quantity
 
                             if product.quantity < quantity:
