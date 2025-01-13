@@ -17,6 +17,7 @@ class OrderitemQueryset(models.QuerySet):
 
 # БД для оформления заказа, личная информация
 class Order(models.Model):
+
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, blank=True, null=True, verbose_name="Пользователь",
                              default=None)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
@@ -26,6 +27,8 @@ class Order(models.Model):
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при получении")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
     status = models.CharField(max_length=50, default='В обработке', verbose_name="Статус заказа")
+
+    objects = models.Manager()
 
     class Meta:
         db_table = "order"
